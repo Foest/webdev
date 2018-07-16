@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Word Cloud</title>
+  </head>
+  <body>
+    <div class="idea-form">
+      <input type="text" class="idea-input" placeholder="Enter an Idea">
+      <button class="button idea-button">Submit</button></br>
+      <span>Suggestions</span>
+      <ul class="suggestions">
+      </ul>
+    </div>
+  </body>
+
+  <script>
+    const ideas = {};
+
+    function addIdea(){
+        const ideaInput = document.querySelector('.idea-input');
+        const idea = ideaInput.value;
+        if(ideas.hasOwnProperty(idea)){
+            ideas[idea] += 1;
+        } else {
+            ideas[idea] = 0;
+        }
+        ideaInput.value = "";
+    }
+
+    function findSuggestions(ideaToMatch){
+        const keys = Object.keys(ideas);
+        if(keys.length > 0 && ideaToMatch.length > 0){
+            return keys.filter(key => {
+                const regex = new RegExp(ideaToMatch, 'gi');
+                return key.match(regex);
+            });
+        } else {
+            return [];
+        }
+    }
+    
+    function showSuggestions(e){
+        const suggestions = findSuggestions(this.value);
+        const html = suggestions.map(suggestion => {
+           const regex = new RegExp(this.value, 'gi');
+           const hl = suggestion.replace(regex, `<span class='hl'>${this.value}</span>`);
+           return `<li>${hl}</li>`
+        }).join('');
+        document.querySelector('.suggestions').innerHTML = html;
+    }
+
+    function test(){
+        console.log("test");
+    }
+
+    const ideaInput = document.querySelector('.idea-input');
+    const ideaButton = document.querySelector('.idea-button');
+    ideaInput.addEventListener('change', showSuggestions);
+    ideaInput.addEventListener('keyup', showSuggestions);
+    ideaButton.addEventListener('click', addIdea);
+    window.addEventListener('keyup', (e) => {
+       if (e.key === 'Enter'){
+           addIdea();
+       }
+    });
+
+  </script>
+
+  <style>
+    .hl {
+        background-color: yellow;
+    }
+  </style>
+<html>
