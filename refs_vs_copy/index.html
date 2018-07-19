@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS Reference VS Copy</title>
+</head>
+<body>
+
+  <script>
+    // start with strings, numbers and booleans
+    let age = 100;
+    let age2 = age;
+    console.log(age, age2);
+    age2 = 200;
+    console.log(age, age2);
+
+    let name = 'Joe'
+    let name2 = name;
+    console.log(name, name2);
+    name2 = 'Joely';
+    console.log(name, name2);
+
+//     //Notice weird copy and change behavior
+    const players = ['Wes', 'Sarah', 'Ryan', 'Poppy'];
+    const team = players;
+    console.log(players, team);
+    team[3] = 'Polly';
+    console.log(players, team);
+
+    //Actual way to copy:
+    const team2 = players.slice();
+    //Or
+    const team3 = [].concat(players);
+    //Or
+    const team4 = [...players];
+    //Or
+    const team5 = Array.from(players);
+
+    team2[3] = 'Player 2';
+    team3[3] = 'Player 3';
+    team4[3] = 'Player 4'
+    team5[3] = 'Player 5'
+
+    console.log(players, team2, team3, team4, team5);
+
+    //Same with objects
+    const person = {
+      name: 'Wes Bos',
+      age: 80
+    };
+    //Can't do this
+    const person2 = person;
+    console.log(person, person2);
+    person2.age = 1094387;
+    console.log(person, person2);
+
+    //Correct way -- ONLY WORKS ONE LEVEL DEEP
+    const person3 = Object.assign({}, person, {age: 29, newValue: 45});
+    console.log(person, person3);
+
+    //
+  </script>
+
+</body>
+</html>
